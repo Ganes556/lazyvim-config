@@ -6,6 +6,12 @@ return {
       enabled = false,
     },
     servers = {
+      html = {
+        filetypes = { "html", "templ" },
+      },
+      emmet_ls = {
+        filetypes = { "html", "templ" },
+      },
       gopls = {
         settings = {
           gopls = {
@@ -21,12 +27,6 @@ return {
             enable_snippets = true,
           },
         },
-      },
-      html = {
-        filetypes = { "html", "templ" },
-      },
-      emmet_ls = {
-        filetypes = { "html", "templ" },
       },
 
       tsserver = {

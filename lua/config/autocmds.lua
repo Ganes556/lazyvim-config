@@ -7,18 +7,20 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
--- Disable auto format on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-  callback = function()
-    return
-  end,
-})
-
 -- ~/.config/nvim/lua/config/autocmds.lua
+-- add this to your lua/config/autocmds.lua or any init file
+-- add this to your lua/config/autocmds.lua or any init file
+
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   callback = function()
-    -- Sets split line color to a specific color
-    vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#ff0000", bg = "NONE" })
+    vim.api.nvim_set_hl(0, "WinSeparator", {
+      fg = "#737aa2", -- light blue-grey, visible on tokyonight dark
+      bg = "NONE",
+      bold = true,
+    })
   end,
 })
+
+-- fire immediately for the current session
+vim.cmd("doautocmd ColorScheme")
