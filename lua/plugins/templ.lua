@@ -24,7 +24,7 @@ return {
         cmd = { "templ", "lsp" },
         settings = {
           templ = {
-            enable_snippets = false,
+            enable_snippets = true,
           },
         },
       },
