@@ -1,6 +1,6 @@
 -- lua/plugins/copilot.lua
 return {
-  -- 1️⃣ Shared context loader
+  -- 1️⃣ Shared context loader test
   {
     "zbirenbaum/copilot.lua",
     opts = function(_, opts)
