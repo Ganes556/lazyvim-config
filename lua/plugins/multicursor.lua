@@ -1,27 +1,64 @@
+-- lua/plugins/multicursor.lua
 return {
-  "mg979/vim-visual-multi",
-  branch = "master",
-  init = function()
-    -- Use a distinct highlight that works with any LazyVim colorscheme
-    vim.g.VM_theme = "codedark"
+  {
+    "jake-stewart/multicursor.nvim",
+    branch = "1.0",
+    config = function()
+      local mc = require("multicursor-nvim")
+      mc.setup()
 
-    -- Customize highlight groups for visibility
-    vim.g.VM_highlight_matches = "underline"
+      -- add cursors
+      vim.keymap.set({ "n", "v" }, "<A-Up>", function()
+        mc.lineAddCursor(-1)
+      end)
+      vim.keymap.set({ "n", "v" }, "<A-Down>", function()
+        mc.lineAddCursor(1)
+      end)
+      vim.keymap.set({ "n", "v" }, "<C-n>", function()
+        mc.matchAddCursor(1)
+      end)
+      vim.keymap.set({ "n", "v" }, "<C-s>", function()
+        mc.skipCursor(1)
+      end)
+      vim.keymap.set({ "n", "v" }, "<C-q>", function()
+        mc.matchAddCursor(-1)
+      end)
+      vim.keymap.set({ "n", "v" }, "<leader>ma", function()
+        mc.matchAllAddCursors()
+      end)
+      vim.keymap.set({ "n", "v" }, "<leader>mx", function()
+        mc.deleteCursor()
+      end)
+      vim.keymap.set({ "n", "v" }, "<leader>mn", function()
+        mc.nextCursor()
+      end)
+      vim.keymap.set({ "n", "v" }, "<leader>mp", function()
+        mc.prevCursor()
+      end)
+      vim.keymap.set("v", "<leader>ms", mc.splitCursors)
+      vim.keymap.set("n", "<leader>ml", mc.alignCursors)
 
-    vim.g.VM_Mono_hl = "Visual" -- main cursor highlight
-    vim.g.VM_Cursor_hl = "Visual" -- other cursors
-    vim.g.VM_Extend_hl = "VisualNOS" -- extended regions
-    vim.g.VM_Insert_hl = "DiffAdd" -- insert mode cursors
+      -- exit
+      vim.keymap.set("n", "<C-x>", function()
+        if not mc.cursorsEnabled() then
+          mc.enableCursors()
+        elseif mc.hasCursors() then
+          mc.clearCursors()
+        end
+      end, { nowait = true })
 
-    -- Make all VM cursors more visible by overriding after colorscheme loads
-    vim.api.nvim_create_autocmd("ColorScheme", {
-      pattern = "*",
-      callback = function()
-        vim.api.nvim_set_hl(0, "VM_Cursor", { reverse = true, bold = true })
-        vim.api.nvim_set_hl(0, "VM_Extend", { bg = "#3e4451", bold = true })
-        vim.api.nvim_set_hl(0, "VM_Mono", { reverse = true, bold = true })
-        vim.api.nvim_set_hl(0, "VM_Insert", { bg = "#98c379", fg = "#000000", bold = true })
-      end,
-    })
-  end,
+      local hl = vim.api.nvim_set_hl
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "*",
+        callback = function()
+          hl(0, "MultiCursorCursor", { reverse = true, bold = true })
+          hl(0, "MultiCursorVisual", { bg = "#3e4451" })
+          hl(0, "MultiCursorSign", { link = "SignColumn" })
+          hl(0, "MultiCursorDisabledCursor", { reverse = true })
+          hl(0, "MultiCursorDisabledVisual", { bg = "#2d3248" })
+        end,
+      })
+      vim.cmd("doautocmd ColorScheme")
+    end,
+  },
 }
