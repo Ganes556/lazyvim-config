@@ -7,7 +7,6 @@ return {
       local mc = require("multicursor-nvim")
       mc.setup()
 
-      -- add cursors
       vim.keymap.set({ "n", "v" }, "<A-Up>", function()
         mc.lineAddCursor(-1)
       end)
@@ -38,12 +37,32 @@ return {
       vim.keymap.set("v", "<leader>ms", mc.splitCursors)
       vim.keymap.set("n", "<leader>ml", mc.alignCursors)
 
-      -- exit
-      vim.keymap.set("n", "<C-x>", function()
+      -- exit insert mode back to normal across all cursors
+      vim.keymap.set("i", "<Esc>", function()
+        if mc.hasCursors() then
+          -- feed Esc so all cursors exit insert mode
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "in", false)
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+        end
+      end, { nowait = true })
+
+      -- exit multicursor in normal mode
+      vim.keymap.set("n", "<C-c>", function()
         if not mc.cursorsEnabled() then
           mc.enableCursors()
         elseif mc.hasCursors() then
           mc.clearCursors()
+        end
+      end, { nowait = true })
+
+      vim.keymap.set("n", "<Esc>", function()
+        if not mc.cursorsEnabled() then
+          mc.enableCursors()
+        elseif mc.hasCursors() then
+          mc.clearCursors()
+        else
+          vim.cmd("nohlsearch")
         end
       end, { nowait = true })
 
