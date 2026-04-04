@@ -10,3 +10,5 @@ vim.lsp.inlay_hint.enable(false)
 -- Auto save when switching buffers / running commands
 vim.opt.autowrite = true
 vim.opt.autowriteall = true
+
+vim.keymap.del("n", "grr") -- remove duplicate references mapping

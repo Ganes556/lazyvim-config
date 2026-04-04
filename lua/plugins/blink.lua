@@ -9,7 +9,7 @@ return {
         ["<Up>"] = { "select_prev", "fallback" },
         ["<CR>"] = { "accept", "fallback" },
         ["<C-Space>"] = { "show", "fallback" },
-        ["<Esc>"] = { "hide", "fallback" },
+        ["<Esc>"] = { "cancel", "hide", "fallback" },
       }
       return opts
     end,
