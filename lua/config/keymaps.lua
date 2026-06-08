@@ -40,23 +40,3 @@ map("n", "<Esc>", function()
   -- fallback to normal Esc behavior
   vim.cmd("nohlsearch")
 end, { noremap = true, silent = true })
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "templ",
-  callback = function()
-    vim.keymap.set("n", "K", function()
-      local params = vim.lsp.util.make_position_params()
-      local clients = vim.lsp.get_clients({ bufnr = 0 })
-      for _, client in ipairs(clients) do
-        if client.name == "templ" then
-          client.request("textDocument/hover", params, function(err, result, ctx)
-            if result and result.contents then
-              vim.lsp.handlers.hover(err, result, ctx, {})
-            end
-          end, 0)
-          return
-        end
-      end
-    end, { buffer = true, desc = "Hover (templ only)" })
-  end,
-})
