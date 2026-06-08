@@ -19,6 +19,43 @@ return {
       colorscheme = "gruvbox",
     },
   },
+  {
+    "LazyVim/LazyVim",
+    keys = {
+      {
+        "gd",
+        function()
+          if vim.bo.filetype ~= "go" then
+            return vim.lsp.buf.definition()
+          end
+
+          vim.lsp.buf.definition({
+            on_list = function(options)
+              if not options.items or #options.items == 0 then
+                return
+              end
+
+              local target = options.items[1].filename
+              local prefix = target:match("(.-)_templ%.go$")
+
+              if prefix then
+                local fn = vim.fn.expand("<cword>")
+
+                options.items[1].filename = prefix .. ".templ"
+
+                vim.fn.setqflist({}, " ", options)
+                vim.cmd("cfirst")
+                vim.cmd("silent! /templ " .. fn)
+              else
+                vim.lsp.buf.definition()
+              end
+            end,
+          })
+        end,
+        desc = "Go to Definition (templ)",
+      },
+    },
+  },
 
   -- change trouble config
   {
@@ -134,7 +171,7 @@ return {
         "typescript",
         "vim",
         "yaml",
-	"templ",
+        "templ",
       },
     },
   },

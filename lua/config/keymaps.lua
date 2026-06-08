@@ -27,3 +27,36 @@ map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 -- Requires Comment.nvim (already included in LazyVim)
 map("n", "<leader>/", "gcc", { remap = true, desc = "Toggle Comment Line" })
 map("v", "<leader>/", "gc", { remap = true, desc = "Toggle Comment Selection" })
+
+-- Close hover window with Esc
+map("n", "<Esc>", function()
+  -- close any floating windows (hover, signature help, etc.)
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    if vim.api.nvim_win_get_config(win).relative ~= "" then
+      vim.api.nvim_win_close(win, false)
+      return
+    end
+  end
+  -- fallback to normal Esc behavior
+  vim.cmd("nohlsearch")
+end, { noremap = true, silent = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "templ",
+  callback = function()
+    vim.keymap.set("n", "K", function()
+      local params = vim.lsp.util.make_position_params()
+      local clients = vim.lsp.get_clients({ bufnr = 0 })
+      for _, client in ipairs(clients) do
+        if client.name == "templ" then
+          client.request("textDocument/hover", params, function(err, result, ctx)
+            if result and result.contents then
+              vim.lsp.handlers.hover(err, result, ctx, {})
+            end
+          end, 0)
+          return
+        end
+      end
+    end, { buffer = true, desc = "Hover (templ only)" })
+  end,
+})

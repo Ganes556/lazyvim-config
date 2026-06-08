@@ -12,3 +12,16 @@ vim.opt.autowrite = true
 vim.opt.autowriteall = true
 
 vim.keymap.del("n", "grr") -- remove duplicate references mapping
+-- vim.g.clipboard = {
+--   name = "OSC52",
+--   copy = {
+--     ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+--     ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+--   },
+--   paste = {
+--     ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+--     ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+--   },
+-- }
+-- lua/config/options.lua
+vim.opt.clipboard = "unnamedplus"

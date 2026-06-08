@@ -53,3 +53,4 @@ require("lazy").setup({
 })
 
 require("config.filetypes")
+require("ftplugin.templ")

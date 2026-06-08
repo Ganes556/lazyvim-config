@@ -1,6 +1,5 @@
 -- lua/plugins/copilot.lua
 return {
-  -- 1️⃣ Shared context loader test
   {
     "zbirenbaum/copilot.lua",
     opts = function(_, opts)
@@ -10,7 +9,6 @@ return {
         _G.templ_llms_context = f:read("*a")
         f:close()
       end
-
       opts.filetypes = { templ = true, go = true, javascript = true }
       opts.suggestion = {
         enabled = true,
@@ -18,11 +16,16 @@ return {
         keymap = { accept = "<S-Tab>" },
       }
 
+      -- disable hover so gopls handles K in templ files
+      opts.on_attach = function(client)
+        if vim.bo.filetype == "templ" then
+          client.server_capabilities.hoverProvider = false
+        end
+      end
+
       return opts
     end,
   },
-
-  -- 2️⃣ CopilotChat uses the same global context
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     opts = function(_, opts)
