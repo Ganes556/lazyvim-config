@@ -7,6 +7,7 @@ return {
       javascript = { "prettier" },
       typescript = { "prettier" },
       php = { "pint" },
+      blade = { "blade-formatter" },
     },
     -- format_on_save = true,
   },
