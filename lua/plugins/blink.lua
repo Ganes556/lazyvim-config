@@ -1,17 +1,13 @@
--- lua/plugins/blink.lua stays clean, no workarounds needed
+-- blink.cmp: preset "enter" dari LazyVim + navigasi panah + show manual.
+-- (Dulu preset = "none" sehingga semua mapping bawaan hilang.)
 return {
-  {
-    "saghen/blink.cmp",
-    opts = function(_, opts)
-      opts.keymap = {
-        preset = "none",
-        ["<Down>"] = { "select_next", "fallback" },
-        ["<Up>"] = { "select_prev", "fallback" },
-        ["<CR>"] = { "accept", "fallback" },
-        ["<C-Space>"] = { "show", "fallback" },
-        ["<Esc>"] = { "cancel", "hide", "fallback" },
-      }
-      return opts
-    end,
+  "saghen/blink.cmp",
+  opts = {
+    keymap = {
+      ["<Down>"] = { "select_next", "fallback" },
+      ["<Up>"] = { "select_prev", "fallback" },
+      ["<C-Space>"] = { "show", "fallback" },
+      ["<Esc>"] = { "cancel", "hide", "fallback" },
+    },
   },
 }

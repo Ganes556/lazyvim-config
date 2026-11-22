@@ -1,13 +1,19 @@
+-- Tools eksternal yang dipakai formatter/LSP di config ini.
+-- vim.g.lazyvim_php_lsp = "intelephense" -> server itu ikut terpasang otomatis via mason-lspconfig.
 return {
   "mason-org/mason.nvim",
-  event = "LazyFile",
-  cmd = "Mason",
-  keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-  build = ":MasonUpdate",
   opts_extend = { "ensure_installed" },
   opts = {
     ensure_installed = {
+      -- php / laravel
+      "pint",
+      "blade-formatter",
+      "php-cs-fixer",
+      -- go / templ
       "templ",
+      "goimports",
+      "gofumpt",
+      "golangci-lint",
     },
   },
 }

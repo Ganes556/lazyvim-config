@@ -1,42 +1,19 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
---
--- =========================
--- LSP Keymaps (Clean Setup)
--- =========================
 
 local map = vim.keymap.set
 
--- Keep LSP default style (gr prefix)
-
-map("n", "gr", vim.lsp.buf.references, { desc = "References" })
-map("n", "grn", vim.lsp.buf.rename, { desc = "Rename" })
-map("n", "gra", vim.lsp.buf.code_action, { desc = "Code Action" })
-map("n", "gri", vim.lsp.buf.implementation, { desc = "Implementation" })
-map("n", "grt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
-
--- keep fast navigation
-map("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
-map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
-
--- =========================
--- Comment Keymaps
--- =========================
-
--- Requires Comment.nvim (already included in LazyVim)
-map("n", "<leader>/", "gcc", { remap = true, desc = "Toggle Comment Line" })
-map("v", "<leader>/", "gc", { remap = true, desc = "Toggle Comment Selection" })
-
--- Close hover window with Esc
+-- Esc: tutup floating window (hover/signature/CopilotChat); kalau tidak ada -> clear search.
+-- Multicursor punya layer sendiri, lihat lua/plugins/multicursor.lua.
 map("n", "<Esc>", function()
-  -- close any floating windows (hover, signature help, etc.)
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     if vim.api.nvim_win_get_config(win).relative ~= "" then
-      vim.api.nvim_win_close(win, false)
-      return
+      return vim.api.nvim_win_close(win, false)
     end
   end
-  -- fallback to normal Esc behavior
   vim.cmd("nohlsearch")
-end, { noremap = true, silent = true })
+end, { desc = "Close float / clear search" })
+
+map("n", "<leader>/", "gcc", { remap = true, desc = "Toggle Comment Line" })
+map("x", "<leader>/", "gc", { remap = true, desc = "Toggle Comment Selection" })

@@ -1,27 +1,15 @@
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldenable = false -- Don't fold everything on open
-vim.opt.foldlevel = 99
--- vim.g.autoformat = true
-vim.lsp.inlay_hint.enable(false)
--- Auto save when switching buffers / running commands
+
+-- PHP/Laravel: pakai intelephense (dibaca oleh extras lang.php)
+vim.g.lazyvim_php_lsp = "intelephense"
+-- TypeScript/React: vtsls (default LazyVim, eksplisit supaya tidak ambigu)
+vim.g.lazyvim_ts_lsp = "vtsls"
+
 vim.opt.autowrite = true
 vim.opt.autowriteall = true
+vim.lsp.inlay_hint.enable(false)
 
-vim.keymap.del("n", "grr") -- remove duplicate references mapping
--- vim.g.clipboard = {
---   name = "OSC52",
---   copy = {
---     ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
---     ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
---   },
---   paste = {
---     ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
---     ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
---   },
--- }
--- lua/config/options.lua
-vim.opt.clipboard = "unnamedplus"
+-- fold: cukup default LazyVim (foldmethod=indent global, treesitter expr per-buffer,
+-- foldlevel=99 supaya tidak semua terlipat saat buka file). Jangan set manual.
