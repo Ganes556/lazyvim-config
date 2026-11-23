@@ -57,7 +57,23 @@ return {
       terminal = {
         win = {
           -- Biarkan shell menerima Ctrl+H/J/K/L dan Esc; Ctrl+/ tetap membuka/menyembunyikan terminal.
-          keys = { nav_h = false, nav_j = false, nav_k = false, nav_l = false, term_normal = false },
+          keys = {
+            nav_h = false,
+            nav_j = false,
+            nav_k = false,
+            nav_l = false,
+            term_normal = false,
+            paste_clipboard = {
+              "<C-v>",
+              function(self)
+                -- Saat scrollback, teruskan Ctrl+V ke OMP agar membaca clipboard gambar.
+                vim.api.nvim_chan_send(vim.bo[self.buf].channel, "\22")
+                vim.cmd.startinsert()
+              end,
+              mode = "n",
+              desc = "Tempel clipboard lewat aplikasi terminal",
+            },
+          },
         },
       },
       picker = {
